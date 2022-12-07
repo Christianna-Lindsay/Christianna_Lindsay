@@ -1,4 +1,4 @@
 # Christianna_Lindsay
 
-https://Christianna_Lindsay.github.io
+https://christianna-lindsay.github.io/Christianna_Lindsay/
 

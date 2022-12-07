@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>project</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="project_files/libs/clipboard/clipboard.min.js"></script>
+<script src="project_files/libs/quarto-html/quarto.js"></script>
+<script src="project_files/libs/quarto-html/popper.min.js"></script>
+<script src="project_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="project_files/libs/quarto-html/anchor.min.js"></script>
+<link href="project_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="project_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="project_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="project_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="project_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+<p>---</p>
+<p>title: “STAT 5014 Course Project”</p>
+<p>author: “Christianna Lindsay”</p>
+<p>date: “2022-11-22”</p>
+<p>output: html_document</p>
+<p>---</p>
+<p>```{r setup, include=FALSE}</p>
+<p>knitr::opts_chunk$set(echo = TRUE)</p>
+<p>knitr::opts_chunk$set(warning = FALSE, message = FALSE)</p>
+<p>knitr::opts_knit$set(root.dir =“~/Box/Stat_Progr_Packages/Project/data”)</p>
+<p>```</p>
+<p>### Objectives</p>
+<p>This is a short project to demonstrate EDA using the common R packages dplyr and ggplot2.</p>
+<p>The goals of this write-up are</p>
+<p>1) to show how dplyr and ggplot2 can be used to perform EDA, and</p>
+<p>2) to use a two-way ANOVA to assess the relationship number of new plant species and treatment type in this data set.</p>
+<p>### The Data</p>
+<p>This data is from a study conducted in the UK between 2014 and 2016. Floristic, invertebrate, and soil microbial diversity were measured in</p>
+<p>nine different meadow treatments sown in six different locations. The meadow plot treatments consisted of all nine combinations of short, medium, and tall grass (Height 1, 2, 3), and low, medium, and high grass/forb species richness (Diversity 1, 2, 3). Grass height was manipulated by cutting the grass more or less often. Species richness was manipulated by sowing plots with seed mixes containing more or fewer grass and forb species.</p>
+<p>### Data preparation / EDA</p>
+<p>We will be focusing on floristic diversity. We are curious whether a relationship exists between the number of new plant species found in each plot and the treatment type.</p>
+<p>```{r}</p>
+<p># Load libraries</p>
+<p>library(tidyverse)</p>
+<p>library(plotly)</p>
+<p>```</p>
+<p>The packages we will be needing, readr, dplyr, and ggplot2, are all found in the core tidyverse. To read the csv file, we will use the readr function read_csv.</p>
+<p>```{r,include=FALSE}</p>
+<p>data&lt;-read_csv(“F3UES_meadows-expt_plant-quadrat-surveys.csv”)</p>
+<p>```</p>
+<p>We use head() to see the first 10 rows of our data frame, and summary() to get summary statistics for each quantitative variable.</p>
+<p>```{r}</p>
+<p>head(data,n=10)</p>
+<p>summary(data)</p>
+<p>```</p>
+<p>Each row in the data frame corresponds to a certain species found in a given plot. For the sake of simplicity, we will use filter(year==2015) to consider only data collected in 2015.</p>
+<p>Some of the species were sown in the plot at the beginning of the study, but we are interested in the relationship between number of *new* species and treatment type. Therefore, we will use dplyr to calculate number of new species found in each plot, and then find the average number of new species for each treatment type (treatment A-I). The “sown” column indicates whether the plant species was sown in the plot. We can use filter(sown==“n”) to choose species that were not sown.</p>
+<p>To ensure we are not double-counting any species observed in a plot more than once, we want to remove any additional observations of species using distinct(species). group_by(treatment,PlotID) allows us to choose the distinct species for each treatment and PlotID grouping.</p>
+<p>We use summarize(species=n()) to count the number of new species in each plot.</p>
+<p>To find the average number of new species for each treatment type, we find the total number of new species found in all plots for each treatment type using summarise(across(species,sum)). We then use mutate() to create a new “Avg_new_species” column by dividing the total number of species by the number of plots for each treatment type. We use select() to keep only the columns that are relevant: “treatment” and “Avg_new_species”.</p>
+<p>```{r}</p>
+<p>new_spec&lt;- data %&gt;%</p>
+<p>filter(year==2015) %&gt;% #only use obs where year=2015</p>
+<p>filter(sown==“n”) %&gt;% # only use obs of species not sown in the plot</p>
+<p>group_by(treatment,PlotID) %&gt;% distinct(species) %&gt;% #grouping by treatment and PlotID, remove redundant species observations</p>
+<p>group_by(treatment,PlotID) %&gt;% summarise(species=n()) %&gt;% #count the number of species for each treatment</p>
+<p>group_by(treatment) %&gt;% summarise(across(species,sum)) %&gt;% #gives total number of new species in each plot</p>
+<p>mutate(Avg_new_species=species/c(6,4,6,5,4,5,6,5,6,6)) %&gt;%</p>
+<p>select(treatment, Avg_new_species)</p>
+<p>new_spec</p>
+<p>```</p>
+<p>This gives a data frame containing the treatment type (A-I) and the average number of new species in each treatment type.</p>
+<p>If we create a bar plot of average new species vs.&nbsp;treatment type, we get the following:</p>
+<p>```{r}</p>
+<p>ggplot(new_spec, mapping=aes(x=treatment, y=Avg_new_species)) +</p>
+<p>geom_bar(stat=“identity”,fill=“steelblue4”) +</p>
+<p>labs(y=“Number of New Species”)</p>
+<p>```</p>
+<p>Unfortunately, this graph is rather uninformative, as treatment type is labeled A-I in the data set, rather than by the actual height (1-3) and diversity (1-3) levels themselves.</p>
+<p>To fix this, we will use mutate() to add columns corresponding to the Height and Diversity levels for each plot. The following code provides a rather verbose way of labeling the treatment groups with case_when(), and there are other, more succinct ways of accomplishing the same thing.</p>
+<p>```{r}</p>
+<p>new_spec2&lt;- new_spec %&gt;%</p>
+<p>mutate(Height = case_when(treatment==“A” | treatment==“B” | treatment==“C” ~ “1”,</p>
+<p>treatment==“D” | treatment==“E” | treatment==“F” ~ “2”,</p>
+<p>treatment==“G” | treatment==“H” | treatment==“I” ~ “3”,</p>
+<p>treatment==“XCONT” ~ “Control”)) %&gt;%</p>
+<p>mutate(Diversity = case_when(treatment==“A” | treatment==“D” | treatment==“G” ~ “1”,</p>
+<p>treatment==“B” | treatment==“E” | treatment==“H” ~ “2”,</p>
+<p>treatment==“C” | treatment==“F” | treatment==“I” ~ “3”,</p>
+<p>treatment==“XCONT” ~ “Control”))</p>
+<p>new_spec2</p>
+<p>```</p>
+<p>Having added the height and diversity levels to the data frame, we will make a grouped bar graph with ggplot to visualize average new species across both diversity and height.</p>
+<p>```{r}</p>
+<p>ggplot(new_spec2, aes(fill=Diversity, y=Avg_new_species, x=Height)) +</p>
+<p>geom_bar(position=“dodge”, stat=“identity”) +</p>
+<p>scale_fill_manual(values=c(“lightskyblue”,</p>
+<p>“steelblue3”,</p>
+<p>“royalblue4”,</p>
+<p>“darkgrey”)) +</p>
+<p>labs(y=“Average New Plant Species”)</p>
+<p>```</p>
+<p>From the grouped bar graph, it doesn’t look like there is a strong trend in new species across either height or diversity levels. If anything, it looks like there may be a negative relationship between height and new species.</p>
+<p>Another possible way of visualizing this is to create a bubble plot, where the x and y axes are height and diversity, and the size of the bubble corresponds to the average number of new species. We can make the plot interactive using plotly.</p>
+<p>```{r}</p>
+<p>p&lt;-ggplot(new_spec2, aes(x=Height, y=Diversity, size = Avg_new_species)) +</p>
+<p>geom_point(alpha=0.7,color=“steelblue4”) +</p>
+<p>scale_size(name=“New plant species”) +</p>
+<p>scale_size_binned(range = c(1, 15), nice.breaks=TRUE, name=“Average new plant species”)</p>
+<p># turn ggplot interactive with plotly</p>
+<p>pp &lt;- ggplotly(p, tooltip=“Avg_new_species”)</p>
+<p>pp</p>
+<p>```</p>
+<p>Although I don’t see any any clear trends, it looks like the the highest diversity and tallest plots had the fewest new species, while the those along the diagonal had the most new species.</p>
+<p>### Analysis</p>
+<p>#### Two-Way ANOVA</p>
+<p>Lastly, let’s prepare the data for a two-way ANOVA to see if there is a difference in the mean number of new species between the treatment types.</p>
+<p>Here is a frequency table to show the breakdown of the height and diversity levels among the treatment groups.</p>
+<p>```{r}</p>
+<p>table&lt;-table(new_spec2$Height, new_spec2$Diversity)</p>
+<p>rownames(table)&lt;-c(“H1”, “H2”,“H3”,“Control”)</p>
+<p>colnames(table)&lt;-c(“D1”, “D2”,“D3”,“Control”)</p>
+<p>table</p>
+<p>```</p>
+<p>This data frame gives us the number of new plant species in each plot for each treatment type.</p>
+<p>```{r}</p>
+<p>data2&lt;- data %&gt;%</p>
+<p>filter(year==2015) %&gt;% #only use obs where year=2015</p>
+<p>filter(sown==“n”) %&gt;% # only use obs of species not sown in the plot</p>
+<p>group_by(treatment,PlotID) %&gt;% distinct(species) %&gt;% #grouping by treatment and PlotID, remove redundant species observations</p>
+<p>group_by(treatment,PlotID) %&gt;% summarise(species=n()) %&gt;% #count the number of species for each treatment</p>
+<p>mutate(Height = case_when(treatment==“A” | treatment==“B” | treatment==“C” ~ “1”,</p>
+<p>treatment==“D” | treatment==“E” | treatment==“F” ~ “2”,</p>
+<p>treatment==“G” | treatment==“H” | treatment==“I” ~ “3”,</p>
+<p>treatment==“XCONT” ~ “Control”)) %&gt;%</p>
+<p>mutate(Diversity = case_when(treatment==“A” | treatment==“D” | treatment==“G” ~ “1”,</p>
+<p>treatment==“B” | treatment==“E” | treatment==“H” ~ “2”,</p>
+<p>treatment==“C” | treatment==“F” | treatment==“I” ~ “3”,</p>
+<p>treatment==“XCONT” ~ “Control”)) %&gt;%</p>
+<p>mutate(New_species=species) %&gt;%</p>
+<p>select(PlotID,Height,Diversity,New_species)</p>
+<p>head(data2,5)</p>
+<p>```</p>
+<p>Let’s visualize the data using ggpubr. First, we’ll make some box plots.</p>
+<p>```{r}</p>
+<p>library(“ggpubr”)</p>
+<p>ggboxplot(data2, x = “Height”, y = “New_species”, color = “Diversity”,</p>
+<p>palette = c(“lightskyblue”, “steelblue3”,“royalblue4”,“darkgrey”),</p>
+<p>ylab=“New species”)</p>
+<p>```</p>
+<p>Here is a line plot with multiple groups.</p>
+<p>```{r}</p>
+<p>ggline(data2, x = “Height”, y = “New_species”, color = “Diversity”,</p>
+<p>add = c(“mean_se”, “dotplot”),</p>
+<p>palette = c(“lightskyblue”, “steelblue3”,“royalblue4”,“darkgrey”),</p>
+<p>ylab=“New species”)</p>
+<p>```</p>
+<p>An interaction plot:</p>
+<p>```{r}</p>
+<p>interaction.plot(x.factor = data2$Height, trace.factor = data2$Diversity,</p>
+<p>response = data2$New_species, fun = mean,</p>
+<p>type = “b”, legend = TRUE,</p>
+<p>xlab = “Height”, ylab=“Diversity”,</p>
+<p>pch=c(19), trace.label = “Diversity”,</p>
+<p>x.leg=“topleft”,</p>
+<p>col = c(“lightskyblue”, “steelblue3”,“royalblue4”,“darkgrey”))</p>
+<p>```</p>
+<p>Finally, here is the two-way ANOVA with interaction effect:</p>
+<p>```{r}</p>
+<p>a&lt;-aov(New_species ~ Height*Diversity, data=data2)</p>
+<p>summary(a)</p>
+<p>```</p>
+<p>From the ANOVA results, it doesn’t seem that there is an association between number of new species and diversity level or height.</p>
+<p>However, we can see how useful dplyr is in preparing data set for data analysis, and a few of the ways we can use ggplot2 to perform data visualization during EDA.</p>
+<p>\newpage</p>
+<p>### Citations</p>
+<p>Norton, B.A.; Bending, G.D.; Clark, R.; Corstanje, R.; Dunnett, N.; Evans, K.L.; Grafius, D.R.; Gravestock, E.; Grice, S.M.; Harris, J.A.; Hilton, S.; Hoyle, H.; Lim, E.; Mercer, T.G.; Pawlett, M.; Pescott, O.L.; Richards, J.P.; Southon, G.E.; Warren, P.H. (2019). Biodiversity responses to vegetation height and diversity in perennial meadow plantings in two urban areas in the UK. NERC Environmental Information Data Centre. https://doi.org/10.5285/d0741544-cdf3-497d-996b-e30b4b7373c1</p>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

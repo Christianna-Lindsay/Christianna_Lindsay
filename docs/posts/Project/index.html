@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Christianna Lindsay">
+<meta name="dcterms.date" content="2022-11-22">
+
+<title>STAT 5014 Course Project</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="index_files/libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="index_files/libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="index_files/libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="index_files/libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="index_files/libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+<script src="index_files/libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="index_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="index_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">STAT 5014 Course Project</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Christianna Lindsay </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 22, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<section id="objectives" class="level3">
+<h3 class="anchored" data-anchor-id="objectives">Objectives</h3>
+<p>This is a short project to demonstrate EDA using the common R packages dplyr and ggplot2.</p>
+<p>The goals of this write-up are<br>
+1) to show how dplyr and ggplot2 can be used to perform EDA, and<br>
+2) to use a two-way ANOVA to assess the relationship number of new plant species and treatment type in this data set.</p>
+</section>
+<section id="the-data" class="level3">
+<h3 class="anchored" data-anchor-id="the-data">The Data</h3>
+<p>This data is from a study conducted in the UK between 2014 and 2016. Floristic, invertebrate, and soil microbial diversity were measured in nine different meadow treatments sown in six different locations. The meadow plot treatments consisted of all nine combinations of short, medium, and tall grass (Height 1, 2, 3), and low, medium, and high grass/forb species richness (Diversity 1, 2, 3). Grass height was manipulated by cutting the grass more or less often. Species richness was manipulated by sowing plots with seed mixes containing more or fewer grass and forb species.</p>
+</section>
+<section id="data-preparation-eda" class="level3">
+<h3 class="anchored" data-anchor-id="data-preparation-eda">Data preparation / EDA</h3>
+<p>We will be focusing on floristic diversity. We are curious whether a relationship exists between the number of new plant species found in each plot and the treatment type.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The packages we will be needing, readr, dplyr, and ggplot2, are all found in the core tidyverse. To read the csv file, we will use the readr function read_csv.</p>
+<p>We use head() to see the first 10 rows of our data frame, and summary() to get summary statistics for each quantitative variable.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data,<span class="at">n=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 8
+   TtmtYr  year site          treatment PlotID          species    sown  perce…¹
+    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;     &lt;chr&gt;           &lt;chr&gt;      &lt;chr&gt;   &lt;dbl&gt;
+ 1      0  2013 Bramingham.Rd A         Bramingham.Rd.6 Agrostis … y        10  
+ 2      0  2013 Bramingham.Rd A         Bramingham.Rd.6 Festuca r… y        50  
+ 3      0  2013 Bramingham.Rd A         Bramingham.Rd.6 Lolium pe… y        20  
+ 4      0  2013 Bramingham.Rd A         Bramingham.Rd.6 Poa prate… y        20  
+ 5      0  2013 Bramingham.Rd B         Bramingham.Rd.3 Achillea … y         2.5
+ 6      0  2013 Bramingham.Rd B         Bramingham.Rd.3 Agrostis … y         7.5
+ 7      0  2013 Bramingham.Rd B         Bramingham.Rd.3 Festuca r… y        37.5
+ 8      0  2013 Bramingham.Rd B         Bramingham.Rd.3 Lolium pe… y        15  
+ 9      0  2013 Bramingham.Rd B         Bramingham.Rd.3 Lotus cor… y        10  
+10      0  2013 Bramingham.Rd B         Bramingham.Rd.3 Medicago … y         5  
+# … with abbreviated variable name ¹​percentcover</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     TtmtYr           year          site            treatment        
+ Min.   :0.000   Min.   :2013   Length:2169        Length:2169       
+ 1st Qu.:2.000   1st Qu.:2014   Class :character   Class :character  
+ Median :2.000   Median :2015   Mode  :character   Mode  :character  
+ Mean   :2.049   Mean   :2014                                        
+ 3rd Qu.:3.000   3rd Qu.:2015                                        
+ Max.   :3.000   Max.   :2015                                        
+    PlotID            species              sown            percentcover   
+ Length:2169        Length:2169        Length:2169        Min.   : 0.500  
+ Class :character   Class :character   Class :character   1st Qu.: 2.000  
+ Mode  :character   Mode  :character   Mode  :character   Median : 2.000  
+                                                          Mean   : 8.457  
+                                                          3rd Qu.: 7.500  
+                                                          Max.   :95.500  </code></pre>
+</div>
+</div>
+<p>Each row in the data frame corresponds to a certain species found in a given plot. For the sake of simplicity, we will use filter(year==2015) to consider only data collected in 2015.</p>
+<p>Some of the species were sown in the plot at the beginning of the study, but we are interested in the relationship between number of <em>new</em> species and treatment type. Therefore, we will use dplyr to calculate number of new species found in each plot, and then find the average number of new species for each treatment type (treatment A-I). The “sown” column indicates whether the plant species was sown in the plot. We can use filter(sown==“n”) to choose species that were not sown.</p>
+<p>To ensure we are not double-counting any species observed in a plot more than once, we want to remove any additional observations of species using distinct(species). group_by(treatment,PlotID) allows us to choose the distinct species for each treatment and PlotID grouping.</p>
+<p>We use summarize(species=n()) to count the number of new species in each plot.</p>
+<p>To find the average number of new species for each treatment type, we find the total number of new species found in all plots for each treatment type using summarise(across(species,sum)). We then use mutate() to create a new “Avg_new_species” column by dividing the total number of species by the number of plots for each treatment type. We use select() to keep only the columns that are relevant: “treatment” and “Avg_new_species”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>new_spec<span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year<span class="sc">==</span><span class="dv">2015</span>) <span class="sc">%&gt;%</span> <span class="co">#only use obs where year=2015</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sown<span class="sc">==</span><span class="st">"n"</span>) <span class="sc">%&gt;%</span> <span class="co"># only use obs of species not sown in the plot</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment,PlotID) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(species) <span class="sc">%&gt;%</span> <span class="co">#grouping by treatment and PlotID, remove redundant species observations</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment,PlotID) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">species=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="co">#count the number of species for each treatment</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="fu">across</span>(species,sum)) <span class="sc">%&gt;%</span> <span class="co">#gives total number of new species in each plot</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Avg_new_species=</span>species<span class="sc">/</span><span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">6</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(treatment, Avg_new_species)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>new_spec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 2
+   treatment Avg_new_species
+   &lt;chr&gt;               &lt;dbl&gt;
+ 1 A                   14.7 
+ 2 B                   13   
+ 3 C                   16.5 
+ 4 D                   14.6 
+ 5 E                   15.2 
+ 6 F                   13.8 
+ 7 G                   14.7 
+ 8 H                   10   
+ 9 I                    8.83
+10 XCONT               14.8 </code></pre>
+</div>
+</div>
+<p>This gives a data frame containing the treatment type (A-I) and the average number of new species in each treatment type.</p>
+<p>If we create a bar plot of average new species vs.&nbsp;treatment type, we get the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(new_spec, <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>treatment, <span class="at">y=</span>Avg_new_species)) <span class="sc">+</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>,<span class="at">fill=</span><span class="st">"steelblue4"</span>) <span class="sc">+</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Number of New Species"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Unfortunately, this graph is rather uninformative, as treatment type is labeled A-I in the data set, rather than by the actual height (1-3) and diversity (1-3) levels themselves.</p>
+<p>To fix this, we will use mutate() to add columns corresponding to the Height and Diversity levels for each plot. The following code provides a rather verbose way of labeling the treatment groups with case_when(), and there are other, more succinct ways of accomplishing the same thing.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>new_spec2<span class="ot">&lt;-</span> new_spec <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Height =</span> <span class="fu">case_when</span>(treatment<span class="sc">==</span><span class="st">"A"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"B"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"C"</span> <span class="sc">~</span> <span class="st">"1"</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                            treatment<span class="sc">==</span><span class="st">"D"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"E"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"F"</span> <span class="sc">~</span> <span class="st">"2"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                            treatment<span class="sc">==</span><span class="st">"G"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"H"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"I"</span> <span class="sc">~</span> <span class="st">"3"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                            treatment<span class="sc">==</span><span class="st">"XCONT"</span> <span class="sc">~</span> <span class="st">"Control"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Diversity =</span> <span class="fu">case_when</span>(treatment<span class="sc">==</span><span class="st">"A"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"D"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"G"</span> <span class="sc">~</span> <span class="st">"1"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                               treatment<span class="sc">==</span><span class="st">"B"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"E"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"H"</span> <span class="sc">~</span> <span class="st">"2"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                               treatment<span class="sc">==</span><span class="st">"C"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"F"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"I"</span> <span class="sc">~</span> <span class="st">"3"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                               treatment<span class="sc">==</span><span class="st">"XCONT"</span> <span class="sc">~</span> <span class="st">"Control"</span>))</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>new_spec2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 4
+   treatment Avg_new_species Height  Diversity
+   &lt;chr&gt;               &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;    
+ 1 A                   14.7  1       1        
+ 2 B                   13    1       2        
+ 3 C                   16.5  1       3        
+ 4 D                   14.6  2       1        
+ 5 E                   15.2  2       2        
+ 6 F                   13.8  2       3        
+ 7 G                   14.7  3       1        
+ 8 H                   10    3       2        
+ 9 I                    8.83 3       3        
+10 XCONT               14.8  Control Control  </code></pre>
+</div>
+</div>
+<p>Having added the height and diversity levels to the data frame, we will make a grouped bar graph with ggplot to visualize average new species across both diversity and height.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(new_spec2, <span class="fu">aes</span>(<span class="at">fill=</span>Diversity, <span class="at">y=</span>Avg_new_species, <span class="at">x=</span>Height)) <span class="sc">+</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">"dodge"</span>, <span class="at">stat=</span><span class="st">"identity"</span>) <span class="sc">+</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"lightskyblue"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"steelblue3"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"royalblue4"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"darkgrey"</span>)) <span class="sc">+</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Average New  Plant Species"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>From the grouped bar graph, it doesn’t look like there is a strong trend in new species across either height or diversity levels. If anything, it looks like there may be a negative relationship between height and new species.</p>
+<p>Another possible way of visualizing this is to create a bubble plot, where the x and y axes are height and diversity, and the size of the bubble corresponds to the average number of new species. We can make the plot interactive using plotly.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>p<span class="ot">&lt;-</span><span class="fu">ggplot</span>(new_spec2, <span class="fu">aes</span>(<span class="at">x=</span>Height, <span class="at">y=</span>Diversity, <span class="at">size =</span> Avg_new_species)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.7</span>,<span class="at">color=</span><span class="st">"steelblue4"</span>) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">name=</span><span class="st">"New plant species"</span>) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_binned</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">15</span>),  <span class="at">nice.breaks=</span><span class="cn">TRUE</span>, <span class="at">name=</span><span class="st">"Average new plant species"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># turn ggplot interactive with plotly</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">ggplotly</span>(p, <span class="at">tooltip=</span><span class="st">"Avg_new_species"</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>pp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-70700149b0b52a630cc3" style="width:100%;height:464px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-70700149b0b52a630cc3">{"x":{"data":[{"x":[1,1,1,2,2,2,3,3,3,4],"y":[1,2,3,1,2,3,1,2,3,4],"text":["Avg_new_species: 14.666667","Avg_new_species: 13.000000","Avg_new_species: 16.500000","Avg_new_species: 14.600000","Avg_new_species: 15.250000","Avg_new_species: 13.800000","Avg_new_species: 14.666667","Avg_new_species: 10.000000","Avg_new_species:  8.833333","Avg_new_species: 14.833333"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(54,100,139,1)","opacity":0.7,"size":[51.2351307896706,42.7877931244452,55.8230450488213,51.2351307896706,51.2351307896706,42.7877931244452,51.2351307896706,18.3750840588533,18.3750840588533,51.2351307896706],"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(54,100,139,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.2283105022831,"r":7.30593607305936,"b":40.1826484018265,"l":66.4840182648402},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,4.6],"tickmode":"array","ticktext":["1","2","3","Control"],"tickvals":[1,2,3,4],"categoryorder":"array","categoryarray":["1","2","3","Control"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Height","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,4.6],"tickmode":"array","ticktext":["1","2","3","Control"],"tickvals":[1,2,3,4],"categoryorder":"array","categoryarray":["1","2","3","Control"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Diversity","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"13681bdd5210":{"x":{},"y":{},"size":{},"type":"scatter"}},"cur_data":"13681bdd5210","visdat":{"13681bdd5210":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Although I don’t see any any clear trends, it looks like the the highest diversity and tallest plots had the fewest new species, while the those along the diagonal had the most new species.</p>
+</section>
+<section id="analysis" class="level3">
+<h3 class="anchored" data-anchor-id="analysis">Analysis</h3>
+<section id="two-way-anova" class="level4">
+<h4 class="anchored" data-anchor-id="two-way-anova">Two-Way ANOVA</h4>
+<p>Lastly, let’s prepare the data for a two-way ANOVA to see if there is a difference in the mean number of new species between the treatment types.</p>
+<p>Here is a frequency table to show the breakdown of the height and diversity levels among the treatment groups.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>table<span class="ot">&lt;-</span><span class="fu">table</span>(new_spec2<span class="sc">$</span>Height, new_spec2<span class="sc">$</span>Diversity)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(table)<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"H1"</span>, <span class="st">"H2"</span>,<span class="st">"H3"</span>,<span class="st">"Control"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(table)<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"D1"</span>, <span class="st">"D2"</span>,<span class="st">"D3"</span>,<span class="st">"Control"</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         
+          D1 D2 D3 Control
+  H1       1  1  1       0
+  H2       1  1  1       0
+  H3       1  1  1       0
+  Control  0  0  0       1</code></pre>
+</div>
+</div>
+<p>This data frame gives us the number of new plant species in each plot for each treatment type.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>data2<span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year<span class="sc">==</span><span class="dv">2015</span>) <span class="sc">%&gt;%</span> <span class="co">#only use obs where year=2015</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sown<span class="sc">==</span><span class="st">"n"</span>) <span class="sc">%&gt;%</span> <span class="co"># only use obs of species not sown in the plot</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment,PlotID) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(species) <span class="sc">%&gt;%</span> <span class="co">#grouping by treatment and PlotID, remove redundant species observations</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(treatment,PlotID) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">species=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="co">#count the number of species for each treatment</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Height =</span> <span class="fu">case_when</span>(treatment<span class="sc">==</span><span class="st">"A"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"B"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"C"</span> <span class="sc">~</span> <span class="st">"1"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>                            treatment<span class="sc">==</span><span class="st">"D"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"E"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"F"</span> <span class="sc">~</span> <span class="st">"2"</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                            treatment<span class="sc">==</span><span class="st">"G"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"H"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"I"</span> <span class="sc">~</span> <span class="st">"3"</span>,</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>                            treatment<span class="sc">==</span><span class="st">"XCONT"</span> <span class="sc">~</span> <span class="st">"Control"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Diversity =</span> <span class="fu">case_when</span>(treatment<span class="sc">==</span><span class="st">"A"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"D"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"G"</span> <span class="sc">~</span> <span class="st">"1"</span>,</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>                               treatment<span class="sc">==</span><span class="st">"B"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"E"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"H"</span> <span class="sc">~</span> <span class="st">"2"</span>,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                               treatment<span class="sc">==</span><span class="st">"C"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"F"</span> <span class="sc">|</span> treatment<span class="sc">==</span><span class="st">"I"</span> <span class="sc">~</span> <span class="st">"3"</span>,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>                               treatment<span class="sc">==</span><span class="st">"XCONT"</span> <span class="sc">~</span> <span class="st">"Control"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">New_species=</span>species) <span class="sc">%&gt;%</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(PlotID,Height,Diversity,New_species)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data2,<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 5
+# Groups:   treatment [1]
+  treatment PlotID             Height Diversity New_species
+  &lt;chr&gt;     &lt;chr&gt;              &lt;chr&gt;  &lt;chr&gt;           &lt;int&gt;
+1 A         Bramingham.Rd.6    1      1                  11
+2 A         BrickRobinHill.2   1      1                  10
+3 A         Chiltern.Ave.6     1      1                   7
+4 A         Cranfield.Expmtl.8 1      1                  22
+5 A         Goldington.Green.5 1      1                  20</code></pre>
+</div>
+</div>
+<p>Let’s visualize the data using ggpubr. First, we’ll make some box plots.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"ggpubr"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggboxplot</span>(data2, <span class="at">x =</span> <span class="st">"Height"</span>, <span class="at">y =</span> <span class="st">"New_species"</span>, <span class="at">color =</span> <span class="st">"Diversity"</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"lightskyblue"</span>, <span class="st">"steelblue3"</span>,<span class="st">"royalblue4"</span>,<span class="st">"darkgrey"</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">ylab=</span><span class="st">"New species"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Here is a line plot with multiple groups.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggline</span>(data2, <span class="at">x =</span> <span class="st">"Height"</span>, <span class="at">y =</span> <span class="st">"New_species"</span>, <span class="at">color =</span> <span class="st">"Diversity"</span>,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">add =</span> <span class="fu">c</span>(<span class="st">"mean_se"</span>, <span class="st">"dotplot"</span>),</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"lightskyblue"</span>, <span class="st">"steelblue3"</span>,<span class="st">"royalblue4"</span>,<span class="st">"darkgrey"</span>),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">ylab=</span><span class="st">"New species"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>An interaction plot:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">interaction.plot</span>(<span class="at">x.factor =</span> data2<span class="sc">$</span>Height, <span class="at">trace.factor =</span> data2<span class="sc">$</span>Diversity, </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">response =</span> data2<span class="sc">$</span>New_species, <span class="at">fun =</span> mean, </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">legend =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">xlab =</span> <span class="st">"Height"</span>, <span class="at">ylab=</span><span class="st">"Diversity"</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">pch=</span><span class="fu">c</span>(<span class="dv">19</span>), <span class="at">trace.label =</span> <span class="st">"Diversity"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">x.leg=</span><span class="st">"topleft"</span>,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"lightskyblue"</span>, <span class="st">"steelblue3"</span>,<span class="st">"royalblue4"</span>,<span class="st">"darkgrey"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Finally, here is the two-way ANOVA with interaction effect:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>a<span class="ot">&lt;-</span><span class="fu">aov</span>(New_species <span class="sc">~</span> Height<span class="sc">*</span>Diversity, <span class="at">data=</span>data2)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Df Sum Sq Mean Sq F value Pr(&gt;F)
+Height            3  144.1   48.04   1.032  0.388
+Diversity         2   35.8   17.89   0.384  0.683
+Height:Diversity  4  112.0   27.99   0.601  0.664
+Residuals        43 2002.6   46.57               </code></pre>
+</div>
+</div>
+<p>From the ANOVA results, it doesn’t seem that there is an association between number of new species and diversity level or height.</p>
+<p>However, we can see how useful dplyr is in preparing data set for data analysis, and a few of the ways we can use ggplot2 to perform data visualization during EDA.</p>
+<div style="page-break-after: always;"></div>
+</section>
+</section>
+<section id="citations" class="level3">
+<h3 class="anchored" data-anchor-id="citations">Citations</h3>
+<p>Norton, B.A.; Bending, G.D.; Clark, R.; Corstanje, R.; Dunnett, N.; Evans, K.L.; Grafius, D.R.; Gravestock, E.; Grice, S.M.; Harris, J.A.; Hilton, S.; Hoyle, H.; Lim, E.; Mercer, T.G.; Pawlett, M.; Pescott, O.L.; Richards, J.P.; Southon, G.E.; Warren, P.H. (2019). Biodiversity responses to vegetation height and diversity in perennial meadow plantings in two urban areas in the UK. NERC Environmental Information Data Centre. https://doi.org/10.5285/d0741544-cdf3-497d-996b-e30b4b7373c1</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
